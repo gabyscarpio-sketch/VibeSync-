@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Find your vibe</title>
+  <style>
+    html, body {
+      margin: 0;                     /* quita el margen que el navegador pone por defecto */
+      min-height: 100%;              /* la página ocupa al menos toda la altura */
+      background-color: #A12A54;     /* el color */
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      color: white;                  /* letras blancas */
+      text-align: center;            /* centra el texto */
+      margin: 0;
+      padding: 40px 0;               /* aire arriba y abajo del encabezado */
+    }
+
+    img {
+      display: block;                /* evita un pequeño espacio debajo de la imagen */
+      width: 100%;                   /* ancho completo, de extremo a extremo */
+      height: auto;                  /* mantiene la proporción */
+    }
+
+    /* Contenedor: sirve de "referencia" para colocar el botón encima de la imagen */
+    .hero {
+      position: relative;            /* los hijos con position:absolute se miden desde aquí */
+    }
+
+    /* El botón flotando sobre la imagen */
+    .song-btn {
+      position: absolute;            /* lo saca del flujo normal y lo coloca encima */
+      top: 50%;                      /* arranca en el centro vertical... */
+      left: 50%;                     /* ...y en el centro horizontal */
+      transform: translate(-50%, -50%); /* se corre la mitad de su propio ancho y alto para quedar centrado de verdad */
+      display: flex;                 /* disco y texto en fila */
+      align-items: center;           /* alineados verticalmente */
+      gap: 12px;                     /* espacio entre disco y texto */
+      padding: 10px 22px 10px 12px;
+      border: none;
+      border-radius: 999px;          /* bordes totalmente redondeados (forma de píldora) */
+      background-color: white;
+      color: #A12A54;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;               /* manita al pasar el mouse */
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+
+    /* El disco de vinilo, dibujado solo con CSS */
+    .vinyl {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;            /* círculo */
+      background:
+        radial-gradient(circle, #A12A54 0 14%, #111 15% 22%, transparent 23%), /* etiqueta central + agujero */
+        repeating-radial-gradient(circle, #1c1c1c 0 2px, #050505 3px 4px),      /* surcos del disco */
+        conic-gradient(rgba(255,255,255,0.25), transparent 25%, rgba(255,255,255,0.25) 50%, transparent 75%, rgba(255,255,255,0.25)); /* brillo */
+      background-blend-mode: normal;
+    }
+
+    /* El disco gira cuando pasas el mouse por el botón */
+    .song-btn:hover .vinyl {
+      animation: girar 1.5s linear infinite;
+    }
+
+    @keyframes girar {
+      to { transform: rotate(360deg); }
+    }
+  
+    /* ---------- Carrusel (se aplica a cada .carousel) ---------- */
+    .slides {
+      display: flex;                      /* las imágenes van en fila */
+      overflow-x: auto;                   /* se puede desplazar horizontalmente */
+      scroll-snap-type: x mandatory;      /* al soltar, se "imanta" a una imagen completa */
+      scrollbar-width: none;              /* oculta la barra de scroll (Firefox) */
+    }
+    .slides::-webkit-scrollbar { display: none; }  /* ...y en Chrome/Safari */
+
+    .slide {
+      flex: 0 0 100%;                     /* cada imagen ocupa el 100% del ancho, sin encogerse */
+      aspect-ratio: var(--ratio);         /* la proporción la define cada carrusel (ver style="--ratio: ...") */
+      object-fit: cover;                  /* rellena el marco sin deformarse */
+      scroll-snap-align: start;           /* punto donde se detiene el imán */
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.88);
+      color: #A12A54;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    .arrow.prev { left: 12px; }
+    .arrow.next { right: 12px; }
+
+    .dots {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      gap: 8px;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      padding: 0;
+      border: 2px solid white;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+    }
+    .dot.active { background: white; }
+
+    .song-btn { z-index: 2; }             /* el botón de canción queda por encima de las imágenes */
+
+    .arrow:focus-visible, .dot:focus-visible { outline: 3px solid white; outline-offset: 2px; }
+    .slides:focus-visible { outline: 3px solid white; outline-offset: -3px; }
+  </style>
+</head>
+<body>
+  <h1>find your vibe</h1>
+  <div class="hero carousel" style="--ratio: 1308 / 736" role="group" aria-roledescription="carrusel" aria-label="Galería de imágenes 1">
+    <div class="slides" tabindex="0" aria-label="Imágenes del carrusel">
+      <img class="slide" src="img/imagen1.png" alt="Ilustración de una mujer riendo con sombrero negro y boa blanca">
+      <img class="slide" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1308 736'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23A12A54'/><stop offset='1' stop-color='%23560F2C'/></linearGradient></defs><rect width='1308' height='736' fill='url(%23g)'/><text x='50%' y='72%' text-anchor='middle' font-family='Arial,sans-serif' font-size='36' fill='white'>Aquí va tu imagen 2</text></svg>" alt="Imagen 2 del carrusel (reemplázala por la tuya)">
+      <img class="slide" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1308 736'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23A12A54'/><stop offset='1' stop-color='%23560F2C'/></linearGradient></defs><rect width='1308' height='736' fill='url(%23g)'/><text x='50%' y='72%' text-anchor='middle' font-family='Arial,sans-serif' font-size='36' fill='white'>Aquí va tu imagen 3</text></svg>" alt="Imagen 3 del carrusel (reemplázala por la tuya)">
+    </div>
+    <button class="arrow prev" aria-label="Imagen anterior">‹</button>
+    <button class="arrow next" aria-label="Imagen siguiente">›</button>
+    <div class="dots"></div>
+    <button class="song-btn">
+      <span class="vinyl"></span>
+      nombre cancion
+    </button>
+  </div>
+  <div class="hero carousel" style="--ratio: 734 / 413" role="group" aria-roledescription="carrusel" aria-label="Galería de imágenes 2">
+    <div class="slides" tabindex="0" aria-label="Imágenes del carrusel">
+      <img class="slide" src="img/imagen2.jpg" alt="Silueta de un personaje con arco y carcaj caminando hacia una ciudad">
+      <img class="slide" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 734 413'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23A12A54'/><stop offset='1' stop-color='%23560F2C'/></linearGradient></defs><rect width='734' height='413' fill='url(%23g)'/><text x='50%' y='72%' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' fill='white'>Aquí va tu imagen 2</text></svg>" alt="Imagen 2 del carrusel (reemplázala por la tuya)">
+      <img class="slide" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 734 413'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23A12A54'/><stop offset='1' stop-color='%23560F2C'/></linearGradient></defs><rect width='734' height='413' fill='url(%23g)'/><text x='50%' y='72%' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' fill='white'>Aquí va tu imagen 3</text></svg>" alt="Imagen 3 del carrusel (reemplázala por la tuya)">
+    </div>
+    <button class="arrow prev" aria-label="Imagen anterior">‹</button>
+    <button class="arrow next" aria-label="Imagen siguiente">›</button>
+    <div class="dots"></div>
+    <button class="song-btn">
+      <span class="vinyl"></span>
+      nombre cancion
+    </button>
+  </div>
+  <div class="hero carousel" style="--ratio: 1200 / 539" role="group" aria-roledescription="carrusel" aria-label="Galería de imágenes 3">
+    <div class="slides" tabindex="0" aria-label="Imágenes del carrusel">
+      <img class="slide" src="img/imagen3.png" alt="Ilustración de una ciudad al atardecer con rascacielos iluminados junto a un río">
+      <img class="slide" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 539'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23A12A54'/><stop offset='1' stop-color='%23560F2C'/></linearGradient></defs><rect width='1200' height='539' fill='url(%23g)'/><text x='50%' y='72%' text-anchor='middle' font-family='Arial,sans-serif' font-size='26' fill='white'>Aquí va tu imagen 2</text></svg>" alt="Imagen 2 del carrusel (reemplázala por la tuya)">
+      <img class="slide" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 539'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23A12A54'/><stop offset='1' stop-color='%23560F2C'/></linearGradient></defs><rect width='1200' height='539' fill='url(%23g)'/><text x='50%' y='72%' text-anchor='middle' font-family='Arial,sans-serif' font-size='26' fill='white'>Aquí va tu imagen 3</text></svg>" alt="Imagen 3 del carrusel (reemplázala por la tuya)">
+    </div>
+    <button class="arrow prev" aria-label="Imagen anterior">‹</button>
+    <button class="arrow next" aria-label="Imagen siguiente">›</button>
+    <div class="dots"></div>
+    <button class="song-btn">
+      <span class="vinyl"></span>
+      nombre cancion
+    </button>
+  </div>
+
+  <script>
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Esta función es el "molde": le das UN carrusel y lo deja funcionando
+    function initCarousel(carousel) {
+      const slides  = carousel.querySelector('.slides');
+      const items   = slides.querySelectorAll('.slide');
+      const dotsBox = carousel.querySelector('.dots');
+
+      // 1) Crear un puntito por cada imagen
+      items.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'dot';
+        dot.setAttribute('aria-label', 'Ir a la imagen ' + (i + 1));
+        dot.addEventListener('click', () => goTo(i));
+        dotsBox.appendChild(dot);
+      });
+      const dots = dotsBox.querySelectorAll('.dot');
+
+      // 2) ¿En qué imagen estamos? (posición del scroll / ancho de una imagen)
+      function current() {
+        return Math.round(slides.scrollLeft / slides.clientWidth);
+      }
+
+      // 3) Ir a una imagen (si te pasas del final, vuelve al principio y viceversa)
+      function goTo(i) {
+        const n = items.length;
+        const index = (i + n) % n;
+        slides.scrollTo({
+          left: index * slides.clientWidth,
+          behavior: reduceMotion ? 'auto' : 'smooth'
+        });
+      }
+
+      // 4) Marcar el puntito activo cada vez que el carrusel se mueve
+      function updateDots() {
+        const c = current();
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === c);
+          d.setAttribute('aria-current', i === c ? 'true' : 'false');
+        });
+      }
+
+      slides.addEventListener('scroll', updateDots, { passive: true });
+      carousel.querySelector('.prev').addEventListener('click', () => goTo(current() - 1));
+      carousel.querySelector('.next').addEventListener('click', () => goTo(current() + 1));
+      updateDots();
+    }
+
+    // Usar el molde con TODOS los carruseles de la página
+    document.querySelectorAll('.carousel').forEach(initCarousel);
+  </script>
+</body>
+</html>
